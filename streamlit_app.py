@@ -106,11 +106,21 @@ with tab1:
             st.warning("No data returned from API.")
 
 with tab2:
-    fig, ax = plt.subplots(figsize=(10, 5), dpi=150)
-    ax.plot(health_data['createdAt'], health_data['temp'])
-    ax.set_xlabel('Time (GMT)')
-    ax.set_ylabel('Temperature (C)')
-    ax.set_title('Temperature over Time')
+    fig, ax = plt.subplots(figsize=(10, 5), dpi=150, facecolor='dimgrey', edgecolor='dimgrey')
+    # Set background colors
+    fig.patch.set_facecolor('dimgrey')
+    ax.set_facecolor('dimgrey')
+    ax.plot(health_data['createdAt'], health_data['temp'], color='#e63946')
+    ax.set_xlabel('Time (GMT)', color='white')
+    ax.set_ylabel('Temperature (C)', color='white')
+    ax.set_title('Temperature over Time', color='white')
     ax.tick_params(axis='x', rotation=45)
+    # Spines (borders around the plot)
+    for spine in ax.spines.values():
+        spine.set_color('white')
+    
+    # Ticks and grid
+    ax.tick_params(colors='white')
+    ax.grid(True, color='lightgray')
     ax.grid(True)
     st.pyplot(fig)
