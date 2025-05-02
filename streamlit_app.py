@@ -92,7 +92,7 @@ with tab1:
 
             # Create base map centered on your target location
             center = [41.109293605382845, -72.87647943062424]
-            m = folium.Map(location=center, zoom_start=12)
+            m = folium.Map(location=center, zoom_start=12, tiles="Cartodb dark_matter")
 
             # Add HeatMap layer
             heat_data = [[row['lat'], row['lon']] for index, row in data.iterrows()]
