@@ -96,7 +96,7 @@ with tab1:
             # Add HeatMap layer
             gps_df = sensor_data.loc[sensor_data['LT'].isnull() != True, ]
             heat_data = [[row['LT'], row['LG']] for index, row in gps_df.iterrows()]
-            HeatMap(heat_data, radius=5).add_to(m)
+            HeatMap(heat_data, radius=12).add_to(m)
 
             # Display in Streamlit
             st.title("Shark Detection Heatmap")
