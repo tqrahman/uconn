@@ -27,7 +27,7 @@ def parse_payload(payload):
 # Auto-refresh every 10 seconds
 st_autorefresh(interval=10_000, key="api_refresh")
 
-api_query = "https://beta.owldms.com/owl/api/userdata/getrawdata?start=1746153056&end=1846100000&papaId=UCONPAPA"
+api_query = "https://beta.owldms.com/owl/api/userdata/getrawdata?start=1746190800&end=1846100000&papaId=UCONPAPA"
 
 token_header = {
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjkyNSIsIm5iZiI6MTc0NjE1MjIzOCwiZXhwIjoxNzQ2MjM4NjM4LCJpYXQiOjE3NDYxNTIyMzh9.FJCm9cXKBXeIHu5aNmw1mVrop1UnORb1PxuhKeLMWK8'
