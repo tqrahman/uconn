@@ -110,7 +110,7 @@ with tab2:
     # Set background colors
     fig.patch.set_facecolor('dimgrey')
     ax.set_facecolor('dimgrey')
-    ax.plot(health_data['createdAt'], health_data['temp'], color='#e63946')
+    ax.plot(health_data['createdAt'], health_data['temp'], color='white')
     ax.set_xlabel('Time (GMT)', color='white')
     ax.set_ylabel('Temperature (C)', color='white')
     ax.set_title('Temperature over Time', color='white')
