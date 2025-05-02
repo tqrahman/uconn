@@ -44,6 +44,7 @@ def get_api_data():
         return pd.DataFrame()
 
 df = get_api_data()
+# print(df.head())
 df['payload'] = df['payload'].apply(lambda x: literal_eval(x))
 df = pd.concat([df, df['payload'].apply(pd.Series)], axis=1)
 df = df.drop(columns=['payload'])
@@ -53,10 +54,15 @@ df['createdAt'] = pd.to_datetime(df['createdAt'])
 sensor_data = df.loc[df['eventType'] == 'sensor', ].copy()
 parsed_df = sensor_data['Payload'].apply(parse_payload).apply(pd.Series)
 sensor_data = pd.concat([sensor_data.drop(columns=['Payload']), parsed_df], axis=1)
-sensor_data[['datetime_str', 'gps_status']] = sensor_data['date'].str.extract(r'(.*\+00:00)(.*)?')
-sensor_data['datetime'] = pd.to_datetime(sensor_data['datetime_str'], errors='coerce')
-sensor_data['date'] = sensor_data['datetime'].dt.date
-sensor_data['time'] = sensor_data['datetime'].dt.time
+# sensor_data[['datetime_str', 'gps_status']] = sensor_data['date'].str.extract(r'(.*\+00:00)(.*)?')
+# sensor_data['datetime'] = pd.to_datetime(sensor_data['datetime_str'], errors='coerce')
+# sensor_data['date1'] = sensor_data['date'].dt.date
+# sensor_data['time'] = sensor_data['date'].dt.time
+sensor_data['date'] = pd.to_datetime(sensor_data['date'], errors='coerce')
+sensor_data['time'] = sensor_data['date'].dt.time
+sensor_data['hour'] = sensor_data['date'].dt.hour
+sensor_data['min'] = sensor_data['date'].dt.minute
+sensor_data['day'] = sensor_data['date'].dt.day_name()
 
 health_data = df.loc[df['eventType'] == 'health', ].copy()
 parsed_df = health_data['Payload'].apply(parse_payload).apply(pd.Series)
@@ -67,41 +73,34 @@ parsed_df = status_data['Payload'].apply(parse_payload).apply(pd.Series)
 status_data = pd.concat([status_data.drop(columns=['Payload']), parsed_df], axis=1)
 
 # Create tabs
+# st.image("images/huskie.jpeg", use_column_width=True)
 tab1, tab2 = st.tabs(["🦈 Shark Detection", "🦆 Duck Management System"])
 with tab1:
 
-    col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 3])
 
     with col1:
         st.subheader("📋 Log")
         # Sort descending by time
         for _, row in sensor_data.iterrows():
-            st.markdown(f"🦈 Confidence: {row['confidence']} \n Time:`{row['time']}`")
+            st.markdown(f"🦈 DETECTED! \n Confidence: {row['confidence']} \n Time:`{row['time']}`")
     with col2:
-        if not df.empty:
-            # st.dataframe(sensor_data, use_container_width=True)
-            sensor_data['date'] = pd.to_datetime(sensor_data['date'], errors='coerce')
-            sensor_data['hour'] = sensor_data['date'].dt.hour
-            sensor_data['min'] = sensor_data['date'].dt.minute
-            sensor_data['day'] = sensor_data['date'].dt.day_name()
-
-            data = pd.DataFrame({
-                'lat': [41.1092, 41.1100, 41.1080, 41.1111, 41.1120, 41.1130],
-                'lon': [-72.8764, -72.8770, -72.8750, -72.8785, -72.8790, -72.8800],
-            })
+        if not sensor_data.empty:
+            with st.container():
+                st.metric(label="Sharks Detected", value=len(df))
 
             # Create base map centered on your target location
             center = [41.109293605382845, -72.87647943062424]
             m = folium.Map(location=center, zoom_start=10, tiles="Cartodb dark_matter")
 
             # Add HeatMap layer
-            heat_data = [[row['lat'], row['lon']] for index, row in data.iterrows()]
+            gps_df = sensor_data.loc[sensor_data['LT'].isnull() != True, ]
+            heat_data = [[row['LT'], row['LG']] for index, row in gps_df.iterrows()]
             HeatMap(heat_data, radius=15).add_to(m)
 
             # Display in Streamlit
             st.title("Shark Detection Heatmap")
             st_folium(m)
-
 
         else:
             st.warning("No data returned from API.")
