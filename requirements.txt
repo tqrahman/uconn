@@ -3,6 +3,7 @@ appnope==0.1.4
 asttokens==3.0.0
 attrs==25.3.0
 blinker==1.9.0
+branca==0.8.1
 cachetools==5.5.2
 certifi==2025.4.26
 charset-normalizer==3.4.1
@@ -13,6 +14,7 @@ cycler==0.12.1
 debugpy==1.8.14
 decorator==5.2.1
 executing==2.2.0
+folium==0.19.5
 fonttools==4.57.0
 gitdb==4.0.12
 GitPython==3.1.44
@@ -60,6 +62,7 @@ smmap==5.0.2
 stack-data==0.6.3
 streamlit==1.45.0
 streamlit-autorefresh==1.0.1
+streamlit_folium==0.25.0
 tenacity==9.1.2
 toml==0.10.2
 tornado==6.4.2
@@ -69,3 +72,4 @@ tzdata==2025.2
 urllib3==2.4.0
 watchdog==6.0.0
 wcwidth==0.2.13
+xyzservices==2025.4.0

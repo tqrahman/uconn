@@ -1,8 +1,14 @@
 from ast import literal_eval
 import requests
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+import folium
+from folium.plugins import HeatMap
+from streamlit_folium import st_folium
+
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 
@@ -79,12 +85,22 @@ with tab1:
             sensor_data['min'] = sensor_data['date'].dt.minute
             sensor_data['day'] = sensor_data['date'].dt.day_name()
 
-            heatmap_data = sensor_data.groupby(['day', 'hour', 'min']).size().unstack(fill_value=0)
+            data = pd.DataFrame({
+                'lat': [41.1092, 41.1100, 41.1080, 41.1111, 41.1120, 41.1130],
+                'lon': [-72.8764, -72.8770, -72.8750, -72.8785, -72.8790, -72.8800],
+            })
 
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.heatmap(heatmap_data, cmap='Reds', annot=True, fmt="d", linewidths=.5, ax=ax)
-            ax.set_title("Shark Detections by Minute")
-            st.pyplot(fig)
+            # Create base map centered on your target location
+            center = [41.109293605382845, -72.87647943062424]
+            m = folium.Map(location=center, zoom_start=12)
+
+            # Add HeatMap layer
+            heat_data = [[row['lat'], row['lon']] for index, row in data.iterrows()]
+            HeatMap(heat_data, radius=15).add_to(m)
+
+            # Display in Streamlit
+            st.title("Shark Detection Heatmap")
+            st_folium(m)
 
 
         else:
