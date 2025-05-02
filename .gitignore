@@ -1,0 +1,4 @@
+get_data_from_dms.ipynb
+.venv
+__pycache__/
+*.pyc
