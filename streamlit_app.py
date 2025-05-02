@@ -91,7 +91,7 @@ with tab1:
 
             # Create base map centered on your target location
             center = [41.109293605382845, -72.87647943062424]
-            m = folium.Map(location=center, zoom_start=10, tiles="Cartodb dark_matter")
+            m = folium.Map(location=center, zoom_start=10, tiles="Cartodb Positron")
 
             # Add HeatMap layer
             gps_df = sensor_data.loc[sensor_data['LT'].isnull() != True, ]
